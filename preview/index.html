@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Analytics AI - Offline Preview</title>
+  <style>
+    :root { --bg:#020617; --card:#0f172a; --muted:#94a3b8; --line:#1e293b; --ok:#16a34a; --warn:#f59e0b; }
+    body { margin:0; font-family: Inter, system-ui, sans-serif; background:var(--bg); color:#e2e8f0; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 18px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .chip { border:1px solid var(--line); border-radius:999px; padding:6px 12px; font-size:12px; }
+    input, select { background:#0b1220; color:#e2e8f0; border:1px solid var(--line); border-radius:8px; padding:10px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+    .small { font-size:12px; color:var(--muted); }
+    .rating { font-size:20px; font-weight:700; }
+    .good { color: var(--ok); } .warn { color: var(--warn); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <h2 style="margin:0">Stock Analytics AI <span class="small">(Offline preview)</span></h2>
+        <div class="chip">Educational only, not investment advice</div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <input id="symbol" value="AAPL" />
+        <select id="mode"><option>Beginner Mode</option><option>Pro Mode</option></select>
+        <button onclick="loadData()">Load</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <div id="company" style="font-weight:700;font-size:24px">Apple Inc. (AAPL)</div>
+          <div id="meta" class="small">NASDAQ · Technology · Consumer Electronics</div>
+        </div>
+        <div>
+          <div id="price" style="font-size:24px">$215.30</div>
+          <div class="small">Confidence range: <span id="confidence">55-68%</span></div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div class="chip">Overview</div><div class="chip">Fundamentals</div><div class="chip">Financials</div><div class="chip">Valuation</div>
+        <div class="chip">Technicals</div><div class="chip">AI Insight</div><div class="chip">Events</div><div class="chip">Ownership</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="rating">Decision: <span id="decision" class="warn">Watchlist</span></div>
+        <div class="small">Allocation: <span id="alloc">6%</span> of investable amount</div>
+        <ul>
+          <li>P/E vs industry and debt trend used for rating.</li>
+          <li>No guarantee. Scenario-based confidence only.</li>
+          <li>If support breaks with volume, consider trimming.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Fundamentals</h3>
+        <div>ROE: <b id="roe">152.4%</b></div>
+        <div>Debt/Equity: <b id="de">1.45</b></div>
+        <div>P/E(TTM): <b id="pe">28.1</b> <span class="small">(tooltip: Price / EPS TTM)</span></div>
+      </div>
+      <div class="card">
+        <h3>Technicals</h3>
+        <div>Trend: <b id="trend" class="good">Bullish</b></div>
+        <div>Support: <b id="support">205</b></div>
+        <div>Resistance: <b id="resistance">222</b></div>
+      </div>
+      <div class="card">
+        <h3>AI Insight</h3>
+        <div id="summary" class="small">Mixed signals; monitor valuation premium and leverage.</div>
+        <ul class="small">
+          <li>Pros: cashflow conversion, trend stability.</li>
+          <li>Cons: debt sensitivity, macro rates risk.</li>
+          <li>Alternatives: MSFT, GOOGL, TCS.NS</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+<script>
+const db={"AAPL":{c:"Apple Inc. (AAPL)",m:"NASDAQ · Technology · Consumer Electronics",p:"$215.30",roe:"152.4%",de:"1.45",pe:"28.1",trend:"Bullish",s:205,r:222,conf:"55-68%",alloc:"6%"},"RELIANCE.NS":{c:"Reliance Industries (RELIANCE.NS)",m:"NSE · Energy · Integrated Oil & Gas",p:"₹2998.00",roe:"8.8%",de:"0.42",pe:"25.2",trend:"Neutral",s:2870,r:3060,conf:"52-66%",alloc:"5%"}};
+function loadData(){const sym=document.getElementById('symbol').value.trim().toUpperCase();const d=db[sym]||db['AAPL'];company.textContent=d.c;meta.textContent=d.m;price.textContent=d.p;roe.textContent=d.roe;de.textContent=d.de;pe.textContent=d.pe;trend.textContent=d.trend;support.textContent=d.s;resistance.textContent=d.r;confidence.textContent=d.conf;alloc.textContent=d.alloc;}
+</script>
+</body>
+</html>
